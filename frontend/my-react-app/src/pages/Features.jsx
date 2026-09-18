@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import API from '../api/client';
 import FeatureCard from '../components/FeatureCard';
 import CreateFeatureModal from '../components/CreateFeatureModal';
@@ -16,6 +16,7 @@ export default function Features() {
 
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { projectId } = useParams();
 
   const categories = ['All', 'UI/UX', 'Integrations', 'Performance', 'General'];
 
@@ -30,7 +31,7 @@ export default function Features() {
     try {
       setLoading(true);
       const { data } = await API.get('/features', {
-        params: { search, category, sortBy }
+        params: { search, category, sortBy, projectId }
       });
       setFeatures(data);
     } catch (err) {
@@ -137,6 +138,7 @@ export default function Features() {
         isOpen={isCreateOpen}
         onClose={() => setIsCreateOpen(false)}
         onCreated={handleFeatureCreated}
+        projectId={projectId}
       />
     </div>
   );

@@ -3,11 +3,15 @@ const Comment = require('../models/Comment');
 
 exports.createFeature = async (req, res) => {
   try {
-    const { title, description, category } = req.body;
+    const { title, description, category, projectId } = req.body;
+    if (!projectId) {
+      return res.status(400).json({ message: 'projectId is required' });
+    }
     const feature = await FeatureRequest.create({
       title,
       description,
       category,
+      project: projectId,
       author: req.user.id
     });
     const populated = await feature.populate('author', 'name email');
@@ -19,8 +23,12 @@ exports.createFeature = async (req, res) => {
 
 exports.getFeatures = async (req, res) => {
   try {
-    const { search, category, status, sortBy } = req.query;
+    const { search, category, status, sortBy, projectId } = req.query;
     let query = {};
+    
+    if (projectId) {
+      query.project = projectId;
+    }
 
     if (search && search.trim()) {
       query.$or = [
@@ -152,6 +160,7 @@ exports.getMyRequests = async (req, res) => {
   try {
     const features = await FeatureRequest.find({ author: req.user.id })
       .populate('author', 'name email')
+      .populate('project', 'title')
       .sort({ createdAt: -1 });
     res.json(features);
   } catch (error) {

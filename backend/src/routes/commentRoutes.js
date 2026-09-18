@@ -4,7 +4,7 @@ const { addComment, getCommentsByFeature, updateComment, deleteComment } = requi
 const { protect } = require('../middlewares/authMiddleware');
 const { commentValidation } = require('../middlewares/validateMiddleware');
 
-router.get('/', getCommentsByFeature);
+router.get('/', protect, getCommentsByFeature);
 router.post('/', protect, commentValidation.create, addComment);
 router.put('/:commentId', protect, commentValidation.create, updateComment);
 router.delete('/:commentId', protect, deleteComment);

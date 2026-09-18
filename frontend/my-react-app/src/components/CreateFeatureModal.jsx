@@ -3,7 +3,7 @@ import { X, Eye, Edit3, AlertCircle } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import API from '../api/client';
 
-export default function CreateFeatureModal({ isOpen, onClose, onCreated }) {
+export default function CreateFeatureModal({ isOpen, onClose, onCreated, projectId }) {
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('General');
   const [description, setDescription] = useState('');
@@ -29,7 +29,8 @@ export default function CreateFeatureModal({ isOpen, onClose, onCreated }) {
       const { data } = await API.post('/features', {
         title: title.trim(),
         description: description.trim(),
-        category
+        category,
+        projectId
       });
       setTitle('');
       setDescription('');

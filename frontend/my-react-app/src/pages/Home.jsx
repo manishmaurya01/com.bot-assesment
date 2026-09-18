@@ -12,13 +12,13 @@ export default function Home() {
 
       <div className="flex justify-center gap-3">
         <Link
-          to="/features"
+          to="/projects"
           className="bg-brand-600 text-white font-medium px-5 py-2.5 rounded-md hover:bg-brand-700 transition shadow-sm"
         >
           Submit a Feature
         </Link>
         <Link
-          to="/roadmap"
+          to="/projects"
           className="bg-white text-slate-700 font-medium px-5 py-2.5 rounded-md border border-slate-200 hover:bg-slate-50 transition"
         >
           View Roadmap

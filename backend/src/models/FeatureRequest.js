@@ -15,6 +15,7 @@ const featureRequestSchema = new mongoose.Schema(
       default: 'Under Review'
     },
     author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    project: { type: mongoose.Schema.Types.ObjectId, ref: 'Project', required: true, index: true },
     upvotes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     upvoteCount: { type: Number, default: 0 },
     commentCount: { type: Number, default: 0 }
@@ -23,8 +24,8 @@ const featureRequestSchema = new mongoose.Schema(
 );
 
 // Indexes for fast searching and sorting
-featureRequestSchema.index({ title: 'text', description: 'text' });
-featureRequestSchema.index({ status: 1 });
-featureRequestSchema.index({ category: 1 });
+featureRequestSchema.index({ project: 1, title: 'text', description: 'text' });
+featureRequestSchema.index({ project: 1, status: 1 });
+featureRequestSchema.index({ project: 1, category: 1 });
 
 module.exports = mongoose.model('FeatureRequest', featureRequestSchema);

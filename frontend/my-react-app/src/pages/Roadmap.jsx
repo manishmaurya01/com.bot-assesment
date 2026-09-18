@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import API from '../api/client';
 import { ThumbsUp, MessageSquare, ArrowRight, Layout } from 'lucide-react';
 
@@ -7,6 +7,7 @@ export default function Roadmap() {
   const [features, setFeatures] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const { projectId } = useParams();
 
   useEffect(() => {
     fetchFeatures();
@@ -15,7 +16,7 @@ export default function Roadmap() {
   const fetchFeatures = async () => {
     try {
       setLoading(true);
-      const { data } = await API.get('/features');
+      const { data } = await API.get('/features', { params: { projectId } });
       setFeatures(data);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to load roadmap.');
@@ -42,7 +43,7 @@ export default function Roadmap() {
           <div className="text-sm text-slate-400 text-center py-8">No items yet</div>
         ) : (
           items.map(feature => (
-            <Link key={feature._id} to={`/features/${feature._id}`} 
+            <Link key={feature._id} to={`/projects/${projectId}/features/${feature._id}`} 
               className={`block bg-white p-4 rounded-lg shadow-sm border border-slate-100 hover:shadow-md transition-shadow ${bgColor} hover:border-transparent`}>
               <div className="flex items-start justify-between mb-2">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">{feature.category}</span>

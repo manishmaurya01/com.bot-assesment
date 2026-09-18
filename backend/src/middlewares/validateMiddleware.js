@@ -57,6 +57,7 @@ const featureValidation = {
       .isLength({ max: 120 })
       .withMessage('Title cannot exceed 120 characters'),
     body('description').trim().notEmpty().withMessage('Description is required'),
+    body('projectId').notEmpty().withMessage('Project ID is required'),
     body('category')
       .isIn(['UI/UX', 'Integrations', 'Performance', 'General'])
       .withMessage('Invalid category specified'),

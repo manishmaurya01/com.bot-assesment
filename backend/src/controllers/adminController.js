@@ -53,6 +53,7 @@ exports.getAllFeatures = async (req, res) => {
   try {
     const features = await FeatureRequest.find()
       .populate('author', 'name email')
+      .populate('project', 'title')
       .sort({ createdAt: -1 });
     res.json(features);
   } catch (error) {

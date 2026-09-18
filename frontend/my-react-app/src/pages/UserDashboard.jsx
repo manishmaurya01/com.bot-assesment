@@ -21,10 +21,8 @@ export default function UserDashboard() {
   const fetchMyFeatures = async () => {
     try {
       setLoading(true);
-      const { data } = await API.get('/features');
-      // Filter features by current user
-      const mine = data.filter(f => f.author?._id === user.id);
-      setMyFeatures(mine);
+      const { data } = await API.get('/features/my-requests');
+      setMyFeatures(data);
     } catch (err) {
       console.error('Error fetching features', err);
     } finally {
@@ -73,8 +71,8 @@ export default function UserDashboard() {
               <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
                 <List className="w-5 h-5 text-brand-600" /> My Feature Requests
               </h3>
-              <Link to="/features" className="text-sm text-brand-600 hover:underline font-medium">
-                + New Request
+              <Link to="/projects" className="text-sm text-brand-600 hover:underline font-medium">
+                Browse Projects
               </Link>
             </div>
             
@@ -82,13 +80,13 @@ export default function UserDashboard() {
               {myFeatures.length === 0 ? (
                 <div className="p-8 text-center text-slate-500">
                   <p className="mb-4">You haven't submitted any feature requests yet.</p>
-                  <Link to="/features" className="px-4 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 text-sm font-medium transition-colors">
-                    Submit a Request
+                  <Link to="/projects" className="px-4 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 text-sm font-medium transition-colors">
+                    Browse Projects
                   </Link>
                 </div>
               ) : (
                 myFeatures.map(f => (
-                  <Link key={f._id} to={`/features/${f._id}`} className="block p-5 hover:bg-slate-50 transition-colors">
+                  <Link key={f._id} to={`/projects/${f.project?._id || 'unknown'}/features/${f._id}`} className="block p-5 hover:bg-slate-50 transition-colors">
                     <div className="flex items-start justify-between mb-2">
                       <h4 className="font-bold text-slate-900">{f.title}</h4>
                       <span className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded border border-slate-200">

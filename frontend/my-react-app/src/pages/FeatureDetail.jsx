@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 
 export default function FeatureDetail() {
-  const { id } = useParams();
+  const { id, projectId } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -72,7 +72,7 @@ export default function FeatureDetail() {
     try {
       setDeleting(true);
       await API.delete(`/features/${id}`);
-      navigate('/features');
+      navigate(`/projects/${projectId}/features`);
     } catch (err) {
       alert(err.response?.data?.message || 'Failed to delete');
       setDeleting(false);
@@ -136,7 +136,7 @@ export default function FeatureDetail() {
       <div className="max-w-4xl mx-auto px-4 py-16 text-center">
         <AlertCircle className="w-8 h-8 text-red-400 mx-auto mb-3" />
         <h2 className="text-lg font-bold text-slate-800 mb-2">{error || 'Not Found'}</h2>
-        <Link to="/features" className="text-sm text-brand-600 hover:underline">&larr; Back</Link>
+        <Link to={`/projects/${projectId}/features`} className="text-sm text-brand-600 hover:underline">&larr; Back</Link>
       </div>
     );
   }
@@ -202,7 +202,7 @@ export default function FeatureDetail() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <Link to="/features" className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-900 transition mb-6">
+      <Link to={`/projects/${projectId}/features`} className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-900 transition mb-6">
         <ArrowLeft className="w-4 h-4" /> Back to Feature Requests
       </Link>
 

@@ -135,7 +135,7 @@ export default function AdminDashboard() {
                     </td>
                     <td className="p-4 text-sm text-slate-500">{new Date(f.createdAt).toLocaleDateString()}</td>
                     <td className="p-4 text-right">
-                      <button onClick={() => navigate(`/features/${f._id}`)} className="text-blue-600 hover:text-blue-800 p-1 mr-2"><Edit className="w-4 h-4 inline" /></button>
+                      <button onClick={() => navigate(`/projects/${f.project?._id || 'unknown'}/features/${f._id}`)} className="text-blue-600 hover:text-blue-800 p-1 mr-2"><Edit className="w-4 h-4 inline" /></button>
                       <button onClick={() => deleteFeature(f._id)} className="text-red-600 hover:text-red-800 p-1"><Trash2 className="w-4 h-4 inline" /></button>
                     </td>
                   </tr>

@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 import Navbar from './components/Navbar';
+import Projects from './pages/Projects';
 import Home from './pages/Home';
 import Features from './pages/Features';
 import Roadmap from './pages/Roadmap';
@@ -22,9 +24,10 @@ export default function App() {
           <main className="flex-1">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/features" element={<Features />} />
-              <Route path="/features/:id" element={<FeatureDetail />} />
-              <Route path="/roadmap" element={<Roadmap />} />
+              <Route path="/projects" element={<ProtectedRoute><Projects /></ProtectedRoute>} />
+              <Route path="/projects/:projectId/features" element={<ProtectedRoute><Features /></ProtectedRoute>} />
+              <Route path="/projects/:projectId/features/:id" element={<ProtectedRoute><FeatureDetail /></ProtectedRoute>} />
+              <Route path="/projects/:projectId/roadmap" element={<ProtectedRoute><Roadmap /></ProtectedRoute>} />
               <Route path="/dashboard" element={<UserDashboard />} />
               <Route path="/admin" element={<AdminDashboard />} />
               

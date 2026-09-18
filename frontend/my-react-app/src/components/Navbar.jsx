@@ -1,10 +1,15 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Layers, LogOut, User } from 'lucide-react';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Extract projectId if we are on a project-specific route
+  const projectIdMatch = location.pathname.match(/\/projects\/([a-f0-9]{24})/);
+  const projectId = projectIdMatch ? projectIdMatch[1] : null;
 
   const handleLogout = async () => {
     await logout();
@@ -20,8 +25,13 @@ export default function Navbar() {
         </Link>
 
         <div className="flex items-center gap-6 text-sm font-medium text-slate-600">
-          <Link to="/features" className="hover:text-brand-600 transition">Features</Link>
-          <Link to="/roadmap" className="hover:text-brand-600 transition">Roadmap</Link>
+          <Link to="/projects" className="hover:text-brand-600 transition">Projects</Link>
+          {projectId && (
+            <>
+              <Link to={`/projects/${projectId}/features`} className="hover:text-brand-600 transition">Features</Link>
+              <Link to={`/projects/${projectId}/roadmap`} className="hover:text-brand-600 transition">Roadmap</Link>
+            </>
+          )}
           {user && (
             <Link to="/dashboard" className="hover:text-brand-600 transition">Dashboard</Link>
           )}

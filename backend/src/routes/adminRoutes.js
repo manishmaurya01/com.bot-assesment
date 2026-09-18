@@ -1,30 +1,16 @@
 const express = require('express');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
+const router = express.Router();
+const { updateFeatureStatus, deleteFeature, deleteComment, getAllFeatures, getAllUsers, getStats } = require('../controllers/adminController');
+const { protect } = require('../middlewares/authMiddleware');
+const { adminOnly } = require('../middlewares/adminMiddleware');
 
-const authRoutes = require('./routes/authRoutes');
-const featureRoutes = require('./routes/featureRoutes');
-const commentRoutes = require('./routes/commentRoutes');
-const adminRoutes = require('./routes/adminRoutes');
+router.use(protect, adminOnly);
 
-const app = express();
+router.get('/stats', getStats);
+router.get('/features', getAllFeatures);
+router.get('/users', getAllUsers);
+router.patch('/features/:id/status', updateFeatureStatus);
+router.delete('/features/:id', deleteFeature);
+router.delete('/comments/:id', deleteComment);
 
-app.use(express.json());
-app.use(cookieParser());
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
-    credentials: true
-  })
-);
-
-// Mount API v1 Routes
-app.use('/api/v1/auth', authRoutes);
-app.use('/api/v1/features', featureRoutes);
-app.use('/api/v1/features/:featureId/comments', commentRoutes);
-app.use('/api/v1/admin', adminRoutes);
-
-// Base route test
-app.get('/health', (req, res) => res.json({ status: 'ok', timestamp: new Date() }));
-
-module.exports = app;
+module.exports = router;

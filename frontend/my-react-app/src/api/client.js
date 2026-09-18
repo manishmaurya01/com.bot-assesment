@@ -20,8 +20,9 @@ API.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
+        const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
         const { data } = await axios.post(
-          'http://localhost:5000/api/v1/auth/refresh-token',
+          `${baseURL}/auth/refresh-token`,
           {},
           { withCredentials: true }
         );
@@ -30,7 +31,10 @@ API.interceptors.response.use(
         return API(originalRequest);
       } catch (err) {
         localStorage.removeItem('accessToken');
-        window.location.href = '/login';
+        localStorage.removeItem('user');
+        if (!['/login', '/signup', '/verify-email', '/forgot-password', '/reset-password'].includes(window.location.pathname)) {
+          window.location.href = '/login';
+        }
       }
     }
     return Promise.reject(error);

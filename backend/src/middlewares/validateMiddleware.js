@@ -27,6 +27,24 @@ const authValidation = {
     body('email').trim().isEmail().withMessage('Please provide a valid email address'),
     body('password').notEmpty().withMessage('Password is required'),
     validate
+  ],
+  verifyEmail: [
+    body('email').trim().isEmail().withMessage('Please provide a valid email address'),
+    body('code').trim().notEmpty().withMessage('Verification code is required'),
+    validate
+  ],
+  resendVerification: [
+    body('email').trim().isEmail().withMessage('Please provide a valid email address'),
+    validate
+  ],
+  forgotPassword: [
+    body('email').trim().isEmail().withMessage('Please provide a valid email address'),
+    validate
+  ],
+  resetPassword: [
+    body('token').trim().notEmpty().withMessage('Reset token is required'),
+    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+    validate
   ]
 };
 
@@ -40,6 +58,21 @@ const featureValidation = {
       .withMessage('Title cannot exceed 120 characters'),
     body('description').trim().notEmpty().withMessage('Description is required'),
     body('category')
+      .isIn(['UI/UX', 'Integrations', 'Performance', 'General'])
+      .withMessage('Invalid category specified'),
+    validate
+  ],
+  update: [
+    body('title')
+      .optional()
+      .trim()
+      .notEmpty()
+      .withMessage('Title cannot be empty')
+      .isLength({ max: 120 })
+      .withMessage('Title cannot exceed 120 characters'),
+    body('description').optional().trim().notEmpty().withMessage('Description cannot be empty'),
+    body('category')
+      .optional()
       .isIn(['UI/UX', 'Integrations', 'Performance', 'General'])
       .withMessage('Invalid category specified'),
     validate

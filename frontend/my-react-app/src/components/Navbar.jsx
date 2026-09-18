@@ -23,7 +23,7 @@ export default function Navbar() {
           <Link to="/features" className="hover:text-brand-600 transition">Features</Link>
           <Link to="/roadmap" className="hover:text-brand-600 transition">Roadmap</Link>
           {user && (
-            <Link to="/my-requests" className="hover:text-brand-600 transition">My Requests</Link>
+            <Link to="/dashboard" className="hover:text-brand-600 transition">Dashboard</Link>
           )}
           {user?.role === 'admin' && (
             <Link to="/admin" className="text-amber-600 font-semibold hover:text-amber-700">Admin</Link>
@@ -33,6 +33,15 @@ export default function Navbar() {
         <div className="flex items-center gap-3">
           {user ? (
             <div className="flex items-center gap-3">
+              {!user.isVerified && (
+                <Link
+                  to="/verify-email"
+                  className="text-xs bg-amber-50 border border-amber-200 text-amber-700 px-2.5 py-1 rounded-full font-medium hover:bg-amber-100 transition"
+                  title="Click to verify your email"
+                >
+                  Verify Email
+                </Link>
+              )}
               <span className="text-xs bg-slate-100 px-2.5 py-1 rounded-full text-slate-700 font-medium border">
                 {user.name}
               </span>
